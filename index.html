@@ -37,7 +37,7 @@
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="profile-img">
-      <img src="static/assets/img/my-profile-img.jpg" alt="" class="img-fluid rounded-circle">
+      <img src="static/assets/img/back12.jpeg" alt="" class="img-fluid rounded-circle">
     </div>
 
     <a href="index.html" class="logo d-flex align-items-center justify-content-center">
@@ -47,6 +47,7 @@
     <div class="social-links text-center">
       <a href="mailto:ankitsain2886@gmail.com" target="_blank" class="google-plus"><i class="bi bi-envelope"></i></a>
       <a href="https://www.linkedin.com/in/ankit-sain-9b644b236" target="_blank" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      <a href="https://github.com/AnkitSain5" target="_blank"><i class="bi bi-github"></i></a>
     </div>
 
     <nav id="navmenu" class="navmenu">
@@ -92,7 +93,7 @@
 
         <div class="row gy-4 justify-content-center">
           <div class="col-lg-4">
-            <img src="static/assets/img/my-profile-img.jpg" class="img-fluid" alt="">
+            <img src="static/assets/img/back.jpeg" class="img-fluid" alt="">
           </div>
           <div class="col-lg-8 content">
             <h2> Web Developer.</h2>
@@ -728,6 +729,13 @@
                   <p>Ankit Sain</p>
                 </div>
               </div>
+              <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                <a href="https://github.com/AnkitSain5" target="_blank"><i class="bi bi-github"></i></a>
+                <div>
+                  <h3>GitHub</h3>
+                  <p>Ankit Sain</p>
+                </div>
+              </div>
 
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13759.029485251935!2d73.01357925177814!3d26.21017803316281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418bbea3ffa63b%3A0x58b0a0a27b618e35!2sKudi%20Bhagtasni%20Housing%20Board%2C%20Jodhpur%2C%20Rajasthan%2C%20India!5e1!3m2!1sen!2sus!4v1740540228338!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               
@@ -779,7 +787,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-    document.getElementById("download-btn").addEventListener("click", function () {
+  document.getElementById("download-btn").addEventListener("click", function () {
       const { jsPDF } = window.jspdf;
       let element = document.getElementById("section-to-download");
 
@@ -789,38 +797,48 @@
       }
 
       html2canvas(element, {
-          scale: 2, // Higher scale for better quality
+          scale: window.devicePixelRatio > 1 ? 3 : 2, // Higher scale for better quality
           useCORS: true,
           backgroundColor: "white", // Prevents transparency issues
+          width: element.scrollWidth,  // Capture full width
+          height: element.scrollHeight, // Capture full height
+          windowWidth: document.documentElement.clientWidth,
+          windowHeight: document.documentElement.clientHeight,
           onclone: (documentClone) => {
               let clonedElement = documentClone.getElementById("section-to-download");
               clonedElement.style.display = "block";
-              clonedElement.style.color = "black"; // Change to any valid CSS color
-              clonedElement.style.backgroundColor = "white"; // Ensures a white background
+              clonedElement.style.color = "black"; 
+              clonedElement.style.backgroundColor = "white"; 
+
               clonedElement.querySelectorAll("*").forEach((el) => {
                   if (window.getComputedStyle(el).color.includes("color(")) {
-                      el.style.color = "black"; // Override unsupported color
+                      el.style.color = "black"; 
                   }
                   if (window.getComputedStyle(el).backgroundColor.includes("color(")) {
-                      el.style.backgroundColor = "white"; // Override unsupported background color
+                      el.style.backgroundColor = "white"; 
                   }
               });
           }
       }).then(canvas => {
           let imgData = canvas.toDataURL("image/png");
           let pdf = new jsPDF("p", "mm", "a4");
+
           let imgWidth = 190; // A4 width in mm (minus margins)
-          let imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+          let imgHeight = (canvas.height * imgWidth) / canvas.width; 
+
+          if (imgHeight > 277) { // If image is taller than A4, scale it down
+              imgHeight = 277;
+              imgWidth = (canvas.width * imgHeight) / canvas.height;
+          }
 
           pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
           pdf.save("Resume.pdf");
       }).catch(error => {
           console.error("Error capturing section:", error);
       });
-    });
-
-
+  });
 </script>
+
 
 
 </body>
